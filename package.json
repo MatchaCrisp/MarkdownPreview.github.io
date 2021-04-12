@@ -6,8 +6,12 @@
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
+    "dompurify": "^2.2.7",
+    "marked": "^2.0.3",
+    "node-sass": "^5.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-marked": "^0.3.1",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.1.1"
   },
