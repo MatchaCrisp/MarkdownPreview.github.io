@@ -2,5 +2,85 @@
 $darkAccent: #224b4b;
 $lightAccent: #2cda9d;
 $backgroundBase: #619e9e;
+/* =============CSS reset=================================== */
+
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+
+/*===========================================================*/
+
+/*=============globals===================*/
+
+*, *::before {
+    box-sizing:border-box;
+    margin:0;
+}
+
+html {
+    font-size:16px;
+    color:darkgray;
+}
+
+body {
+    position:relative;
+}
 
 
+/*==============================*/
+#appWrap{
+    height:100%;
+    #modeSwap {
+        height:2rem;
+        background-color:black;
+        display:flex;
+        justify-content: right;
+    }
+    #display {
+        display:flex;
+        flex-flow: column nowrap;
+
+        background-color:grey;
+        height:calc(100% - 2rem);
+        #edit{
+            flex:1 0 300px;
+            background-color:gainsboro;
+            margin:1rem;
+            max-height:450px;
+            #editMaxi {
+                height:2rem;
+                display:flex;
+                justify-content: right;
+            }
+            #editor {
+                overflow-y:auto;
+                height:calc(100% - 2rem);
+                width:100%;
+                border:none;
+                background-color:antiquewhite;
+                resize:none;
+            }
+        }
+        #prev{
+            flex:1 0 300px;
+            background-color:gainsboro;
+            margin:1rem;
+            max-height:450px;
+            #prevMaxi {
+                height:2rem;
+                display:flex;
+                justify-content: right;
+            }
+            #preview {
+                overflow-y:auto;
+                height:calc(100% - 2rem);
+                width:100%;
+                background-color:antiquewhite;
+            }
+        }
+    }
+}
