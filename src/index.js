@@ -81,7 +81,7 @@ const Display=props=>{
     )
 }
 const ScrCtrl=props=>{
-    const icon=props.scrS?<i class="fas fa-arrows-alt-h"></i>:<i class="fas fa-arrows-alt-v"></i>;
+    const icon=props.scrS?<img className="buttIcon" src="https://raw.githubusercontent.com/MatchaCrisp/MarkdownPreview.github.io/main/src/img/row.png" />:<img className="buttIcon" src="https://raw.githubusercontent.com/MatchaCrisp/MarkdownPreview.github.io/main/src/img/col.png" />;
     return (
         <div id="scrCh">
             <button id="scrBut" onClick={props.scrCh}>{icon}</button>

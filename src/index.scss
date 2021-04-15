@@ -25,12 +25,17 @@ html {
     font-family:Roboto, sans-serif;
     color:$colTxt1;
     body {
-      background-image:url("img/bodyTexture.png");
+      background-image:url("https://raw.githubusercontent.com/MatchaCrisp/MarkdownPreview.github.io/main/src/img/bodyTexture.png");
       button {
         border:none;
         background-color:transparent;
         color:$colTxt1;
         cursor:pointer;
+        .buttIcon {
+          height:1rem;
+          width:1rem;
+          filter:invert(80%);
+        }
       }
       button:hover {
         filter:brightness(130%);
