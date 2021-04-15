@@ -1,21 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
 import DOMPurify from 'dompurify';
 import marked from 'marked';
 
-// ALLOWS LINE BREAKS WITH RETURN BUTTON
 marked.setOptions({
     pedantic: false,
     gfm: true,
     breaks: true,
-    sanitize: false,
-    smartLists: true,
-    smartypants: false,
-    xhtml: false
+
   });
   
-  // INSERTS target="_blank" INTO HREF TAGS (required for codepen links)
   const renderer = new marked.Renderer();
   renderer.link = function(href, title, text) {
     return `<a target="_blank" href="${href}">${text}</a>`;
@@ -24,88 +19,151 @@ marked.setOptions({
 
 const App=()=>{
     const [markky,setMarkky] =useState(placeholder);
-    const [editState, setEditState]=useState(0);
-    const [screenState, setScreenState]=useState('hori');
-
+    //left side (editor)
+    const [aMaxState, setAMaxState]=React.useState(false);
+    //right side (preview)
+    const [bMaxState, setBMaxState]=React.useState(false);
+    //true=default layout, 
+    //false=side by side
+    const [screenState, setScreenState]=useState(true);
+    //a=true edit is max icon is min
+    //b must be false prev is min icon is max
+  
+    //b=true prev is max icon is min
+    //a must be false edit is min icon is max
+    //!a&&b both take up half of screen 
     const handleMark=e=>{
         setMarkky(e.target.value);
     }
 
-    const handleSizeChange=srcc=>{
-
-            setEditState(srcc);
+    const handleEditCh=()=>{
+        setAMaxState(!aMaxState);
+        if (!aMaxState) setBMaxState(false);
+    }
+    const handlePrevCh=()=>{
+        setBMaxState(!bMaxState);
+        if (!bMaxState) setAMaxState(false);
     }
 
-    const handleModeChange=val=>{
-        setScreenState(val);
-    }
+    const handleScrCh=()=>{
+        setScreenState(!screenState);
+      }
     return (
-        <div id="appWrap">
-            <ModeSwapper handleClick={handleModeChange} />
-            <Display handleSizeChange={handleSizeChange}
-                    handleMark={handleMark}
-                    editState={editState}
-                    screenState={screenState}
-                    markky={markky}/>
+        <div id="app">
+            <ScrCtrl scrCh={handleScrCh} 
+                     scrS={screenState} />
+            <Display editCh={handleEditCh} 
+                     prevCh={handlePrevCh}
+                     markCh={handleMark} 
+                     aState={aMaxState} 
+                     bState={bMaxState} 
+                     scrState={screenState}
+                     markky={markky}/>
         </div>
     )
 }
 
 const Display=props=>{
     return (
-        <div id="display">
-            <EditorWindow 
-                handleSz={props.handleSizeChange} 
-                handleChange={props.handleMark}
-                aState={props.editState} 
-                bState={props.screenState} 
-                markd={props.markky} />
-            <PrevWindow 
-                handleSz={props.handleSizeChange} 
-                aState={props.editState} 
-                bState={props.screenState} 
-                markd={props.markky} />
+        <div id="display" className={!props.scrState?'horiDisplay':'vertiDisplay'}>
+            <EditorWin markCh={props.markCh}
+                       editCh={props.editCh} 
+                       aState={props.aState} 
+                       bState={props.bState} 
+                       scrState={props.scrState}
+                       markky={props.markky}/>
+            <PreviewWin prevCh={props.prevCh} 
+                        aState={props.aState} 
+                        bState={props.bState} 
+                        scrState={props.scrState}
+                        markky={props.markky}/>
         </div>
     )
 }
-const ModeSwapper=props=>{
-    console.log('mode',props);
+const ScrCtrl=props=>{
+    const icon=props.scrS?<i class="fas fa-arrows-alt-h"></i>:<i class="fas fa-arrows-alt-v"></i>;
     return (
-        <div id="modeSwap">
-            <button id="hori" onClick={props.handleClick} ><img src="../src/img/row.png" /></button>
-            <button id="verti" onClick={props.handleClick} ><img src="../src/img/col.png" /></button>
+        <div id="scrCh">
+            <button id="scrBut" onClick={props.scrCh}>{icon}</button>
+            <p>screen state = {props.scrS?'true':'false'}</p>
         </div>
     )
 }
 
-const EditorWindow=props=>{
-    console.log('edit',props);
+const EditorWin=props=>{
+    let szing;
+    if (props.scrState){
+        if (props.aState) szing='vertiMaxEdit';
+        else if (props.bState) szing='vertiMinEdit';
+        else szing='vertiEdit';
+    }
+    else {
+        if (props.aState) szing='horiMaxEdit';
+        else if (props.bState) szing='horiMinEdit';
+        else szing='horiEdit';
+    }
     return (
-        <div id="edit">
-            <div id="editMaxi" >
-                <button id="editMax" onClick={props.handleSz} ><i class="fas fa-expand-arrows-alt"></i></button>
-            </div>
-            <textarea id="editor" onChange={props.handleChange} value={props.markd} />
+        <div id="editWin" className={szing}>
+            <EditorControl aState={props.aState} editCh={props.editCh}/>
+            <Editor markCh={props.markCh} markky={props.markky}/>
+
         </div>
 
     )
 }
-
-const PrevWindow=props=>{
-    console.log('prev',props);
+const EditorControl=props=>{
+    const icon=props.aState?<i class="fas fa-compress-arrows-alt"></i>:<i class="fas fa-expand-arrows-alt"></i>;
     return (
-        <div id="prev">
-            <div id="prevMaxi" >
-                <button id="prevMax" onClick={props.handleSz} ><i class="fas fa-expand-arrows-alt"></i></button>
-            </div>
-            <div id="preview" dangerouslySetInnerHTML={{
-        __html: DOMPurify.sanitize(marked(props.markd, { renderer: renderer }), {USE_PROFILES: {html: true}})
-      }}/>
+      <div id="editCh">
+        <button id="editBut" onClick={props.editCh}>{icon}</button>
+      </div>
+    )
+}
+const Editor=props=>{
+    return (
+        <textarea id="editor" onChange={props.markCh} value={props.markky} />
+    )
+  }
+const PreviewWin=props=>{
+    let szing;
+    if (props.scrState){
+        if (props.bState) szing='vertiMaxPrev';
+        else if (props.aState) szing='vertiMinPrev';
+        else szing='vertiPrev';
+    }
+    else {
+        if (props.bState) szing='horiMaxPrev';
+        else if (props.aState) szing='horiMinPrev';
+        else szing='horiPrev';
+    }
+    return (
+        <div id="prevWin" className={szing}>
+            <PreviewControl prevCh={props.prevCh} bState={props.bState}/>
+            <Preview markky={props.markky}/>
         </div>
 
     )
 }
+const PreviewControl=props=>{
+    const icon=props.bState?<i class="fas fa-compress-arrows-alt"></i>:<i class="fas fa-expand-arrows-alt"></i>;
+  return (
+    <div id="prevCh">
+      <button id="prevBut" onClick={props.prevCh}>{icon}</button>
+    </div>
+  )
+}
+const Preview=props=>{
+    
+    return (
+      <div id="preview" dangerouslySetInnerHTML={{__html: 
+        DOMPurify.sanitize(
+            marked(props.markky, renderer), 
+            {USE_PROFILES: {html: true}}
+        )
+    }} />
 
+    )
+  }
 const placeholder = `# Welcome!
 
 This is a previewer of GitHub flavored markdown.
@@ -113,9 +171,9 @@ This is a previewer of GitHub flavored markdown.
 ## Here you can:
 
 ### render some cool markdown like 
-    * **bold** text
-    * _italic_ text
-    * or even have text ~~crossed out~~
+ * **bold** text
+ * _italic_ text
+ * or even have text ~~crossed out~~
 
 ### Or if you have code to display, 
 stick them between two backticks: \`<div></div>\`
