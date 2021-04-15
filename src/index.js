@@ -7,7 +7,7 @@ import marked from 'marked';
 marked.setOptions({
     pedantic: false,
     gfm: true,
-    breaks: true,
+    breaks: true
 
   });
   
@@ -85,7 +85,7 @@ const ScrCtrl=props=>{
     return (
         <div id="scrCh">
             <button id="scrBut" onClick={props.scrCh}>{icon}</button>
-            <p>screen state = {props.scrS?'true':'false'}</p>
+
         </div>
     )
 }
@@ -153,20 +153,30 @@ const PreviewControl=props=>{
   )
 }
 const Preview=props=>{
-    
+    const sanitizeNCreate=()=>{
+        return {
+            __html:DOMPurify.sanitize(marked(props.markky, renderer))
+        }
+    }
     return (
-      <div id="preview" dangerouslySetInnerHTML={{__html: 
-        DOMPurify.sanitize(
-            marked(props.markky, renderer), 
-            {USE_PROFILES: {html: true}}
-        )
-    }} />
+      <div id="preview" dangerouslySetInnerHTML={sanitizeNCreate()} />
 
     )
   }
 const placeholder = `# Welcome!
 
 This is a previewer of GitHub flavored markdown.
+  
+## Markdown
+What is **markdown** you ask?
+
+Good question! Markdown is a plain text formatting syntax, created with the belief that writing for the internet should not clutter your words with lots and lots of HTML tags.
+
+When writing markdown, instead of tags like &lt;em>&lt;/em> you can use simple symbols such as *, _, or ~ to tell the browser the text style you want to apply.
+
+Okay, but what is **markdown flavor**? Is that like ice cream flavors?
+
+YES! It is! and Github flavor taste just like chocolate caramel with a hint of vanilla. But it is also a specification that tells the browser how to process the special symbols.
 
 ## Here you can:
 
@@ -186,7 +196,12 @@ const exampleFunction=()=>{
 }
 \`\`\`
 
->Quote some random guy on the internet?
+### How about:
+>Quoting some random guy on the internet?
+
+Afterall, we all know that:
+
+>No one on the internet lies, and therefore we should trust everything everyone says on the internet implicitly.    <div style="text-align: right"> -Gengis Khan</div>
 
 Or
 

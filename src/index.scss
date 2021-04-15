@@ -1,14 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-$colPri1: #bfbfbf;
-$colTxt1: #868686;
-$colAcc1: #868686;
-
+$colPri1: #50525a;
+$colTxt1: #e0ddeb;
+$colAcc1: #010929;
+$colTxt2: #a49dc0;
+$colPri2: #6b6e79;
+$colAcc2: #031663;
 /*=============globals===================*/
 
 *, *::before {
     box-sizing:border-box;
     margin:0;
+    scrollbar-color: $colPri1 $colAcc1;
+    &::-webkit-scrollbar-thumb {
+      background-color: $colPri1;
+    }
+    &::-webkit-scrollbar-track {
+      background: $colAcc1;
+    }
 }
+
 
 html {
     font-size:16px;
@@ -35,58 +45,70 @@ html {
     height:1.5rem;
     justify-content:right;
     background-color:$colAcc1;
-    color:white;
+    color:$colTxt1;
 }
 #display {
     width:100%;
   
     #editWin {
     background-color:$colPri1;
+    box-shadow: 2px 2px 5px rgb(29, 29, 29);
       #editCh {
         width:100%;
         background-color:$colAcc1;
         display:flex;
         justify-content:right;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
         #editBut {
           height:1.5rem;
         }
       }
       #editor {
         overflow-y:auto;
-        height:100%;
+        border:none;
         width:100%;
         resize:none;
         background-color:$colPri1;
         color:$colTxt1;
         font-family:Roboto, sans-serif;
+        padding:1rem;
+        &:focus {
+          outline:none;
+        }
+
       }
+
     }
     #prevWin {
       background-color:$colPri1;
+      box-shadow: 2px 2px 5px rgb(29, 29, 29);
       #prevCh {
         width:100%;
         background-color:$colAcc1;
         display:flex;
         justify-content:right;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
         #prevBut {
           height:1.5rem;
         }
       }
       #preview {
         overflow-y:auto;
+        padding:1rem;
       }
     }
 }
-
+/*================================*/
 //verti case
-
 .vertiDisplay {
     
     .vertiEdit {
       min-width:300px;
       max-width:800px;
       height:400px;
-      margin:0 auto 1.5rem auto;
+      margin:0.5rem auto 0.5rem auto;
       #editor {
 
         height:calc(100% - 1.5rem);
@@ -95,6 +117,9 @@ html {
     .vertiMaxEdit {
       width:100%;
       height:calc(100vh - 3rem);
+      #editor {
+        height:calc(100% - 1.5rem);
+      }
     }
     .vertiMinEdit {
       width:100%;
@@ -115,6 +140,9 @@ html {
     .vertiMaxPrev {
       width:100%;
       height:calc(100vh - 3rem);
+      #preview {
+        height:calc(100% - 1.5rem);
+      }
     }
     .vertiMinPrev {
       width:100%;
@@ -123,15 +151,21 @@ html {
         display:none;
       }
     }
-  }
+}
   
   //hori case 
-  .horiDisplay {
+.horiDisplay {
     display:flex;
     flex-flow:row nowrap;
     height:calc(100vh - 1.5rem);
+    #editWin {
+      #editor {
+        height:calc(100% - 1.5rem);
+      }
+    }
     .horiEdit {
       flex: 1 0 300px;
+      margin-right: 0.5rem;
     }
     .horiMinEdit {
       flex: 0 1.5rem;
@@ -145,8 +179,14 @@ html {
     .horiMaxEdit {
       flex: 1 0 300px;
     }
+    #prevWin {
+      #preview {
+        height:calc(100% - 1.5rem);
+      }
+    }
     .horiPrev {
       flex: 1 0 300px;
+
     }
     .horiMinPrev {
       flex: 0 1.5rem;
@@ -160,26 +200,59 @@ html {
     .horiMaxPrev {
       flex: 1 0 300px;
     }
-  }
+}
   
 
+//markdown preview
 #preview {
-    code {
+  * {
+    margin-bottom:0.5rem;
+  }
+    p {
+      text-indent:1rem;
+    line-height:1.5rem;
+    margin: 0.3rem 0 0.5rem 0;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      padding-left:0.2rem;
 
+    }
+    h1 {
+      border-bottom: 5px solid $colTxt1;
+    }
+    h2 {
+      border-bottom: 3px solid $colTxt1;
+    }
+    h3 {
+      border-bottom: 1px solid $colTxt1;
+    }
+    code {
+      background-color: $colPri2;
+      margin-left:0.5rem;
     }
     pre {
-
+      padding:0.5rem 0 0.5rem 0;
+      display:block;
+      background-color: $colPri2;
     }
     a {
-
+      text-decoration: none;
+      color:$colAcc2;
     }
     a:hover {
-
+      text-decoration: underline;
+      color:$colTxt2;
     }
     img {
-
+      display:block;
+      max-width:100%;
+      height:auto;
     }
     blockquote {
-
+      margin:0.5rem 0 0.5rem 1.5rem;
+      font-size:1.25rem;
+      line-height: 2rem;
+      border-left:5px solid $colTxt1;
+      padding-left:0.5rem;
     }
 }
