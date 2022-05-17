@@ -3,7 +3,7 @@
   "homepage": "http://MatchaCrisp.github.io/MarkdownPreview.github.io",
   "name": "markdown-preview",
   "description": "project showcasing conversion of markdown into HTML",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "dompurify": "^2.2.7",
